@@ -1,21 +1,32 @@
 import webapp2
 import caesar
+def build(content):
+    header = "<h2>Enter your text:</h2>"
+    message = "Enter your text..."
+    rotation = "<input type='number' name='rotation'/>"
+    textarea = "<textarea name='message'>" + content + "</textarea>"
+    submit = "<input type='submit'/>"
+    form = header + "<form method='post'>" + textarea + "<br>" + "Key:" + rotation + "<br>" + submit + "</form>"
+    return form
+    
 
 class MainHandler(webapp2.RequestHandler):
+    
     def get(self):
-        message = "Hello World!"
-        textarea = "<textarea>" + message + "</textarea>"
-        submit = "<input type='submit'/>"
-        form = "<form>" + textarea + "<br>" +  submit + "</form>"
+        form = build("")
         self.response.write(form)
 
-class EncryptHandler(webapp2.RequestHandler):
-    def get(self):
-        message = "Hellooo World!"
+    def post(self):
+        message = self.request.get("message")
+        key = int(self.request.get("rotation"))
         encryptedmessage = caesar.encrypt(message, 13)
-        self.response.write(encryptedmessage)
+        form = build(encryptedmessage)
+        self.response.write(form)
+        
+
+
+
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/encrypt', EncryptHandler)
+    ('/', MainHandler)
 ], debug=True)
