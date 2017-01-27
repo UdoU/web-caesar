@@ -19,7 +19,7 @@ class MainHandler(webapp2.RequestHandler):
     def post(self):
         message = self.request.get("message")
         key = int(self.request.get("rotation"))
-        encryptedmessage = caesar.encrypt(message, 13)
+        encryptedmessage = caesar.encrypt(message, key)
         form = build(encryptedmessage)
         self.response.write(form)
         
